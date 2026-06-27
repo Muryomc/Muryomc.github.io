@@ -1,3 +1,17 @@
+<?php
+session_start();
+include "db.php";
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>MuryoMC VIPs</title>
+</head>
+
+<body style="margin:0;font-family:Arial;background:#0b1220;color:white;">
+
 <h2>VIPs</h2>
 
 <section style="background:#111827;padding:60px 20px;text-align:center;">
@@ -54,41 +68,58 @@ Contamos com mapas exclusivos, sistema de VIPs, kits, eventos e uma equipe dedic
 <br><br>
 
 <a href="https://discord.gg/wWB86SFwp" target="_blank">
-  <button style="padding:18px 45px;font-size:22px;background:#5865F2;color:white;border:none;border-radius:10px;cursor:pointer;">
+  <button style="padding:18px 45px;font-size:22px;background:#5865F2;color:white;border:none;border-radius:10px;">
     💬 Entrar no Discord
   </button>
 </a>
 
 </section>
 
-<!-- VIP CARDS -->
+<!-- 🔐 LOGIN STATUS -->
+<section style="text-align:center;padding:20px;">
+<?php if(isset($_SESSION['user_id'])): ?>
+  <p>Logado como: <b><?= $_SESSION['username'] ?></b></p>
+  <a href="logout.php" style="color:red;">Sair</a>
+<?php else: ?>
+  <a href="login.html">Login</a> | <a href="register.html">Registrar</a>
+<?php endif; ?>
+</section>
+
+<!-- 🛒 VIP CARDS -->
 <section style="padding:40px 20px;background:#0f172a;display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
 
-  <div class="card" style="background:#161b22;padding:20px;border-radius:12px;width:220px;text-align:center;">
-    <h3>Crimson</h3>
+  <?php
+  $vips = [
+    ["Crimson", 9.90],
+    ["Shadow", 14.90],
+    ["Legend", 19.90]
+  ];
+
+  foreach ($vips as $vip):
+  ?>
+
+  <div style="background:#161b22;padding:20px;border-radius:12px;width:220px;text-align:center;">
+    <h3><?= $vip[0] ?></h3>
     <p>✔ Voar no Lobby<br>✔ Tag Personalizada</p>
-    <div class="preco">R$9,90</div>
-    <a href="https://discord.gg/wWB86SFwp" target="_blank">
-      <button>💬 Comprar</button>
-    </a>
+    <div class="preco">R$<?= number_format($vip[1],2,",",".") ?></div>
+
+    <?php if(isset($_SESSION['user_id'])): ?>
+
+      <form method="POST" action="buy.php">
+        <input type="hidden" name="item_name" value="<?= $vip[0] ?>">
+        <input type="hidden" name="price" value="<?= $vip[1] ?>">
+        <button type="submit">💬 Comprar</button>
+      </form>
+
+    <?php else: ?>
+      <p>Faça login para comprar</p>
+    <?php endif; ?>
+
   </div>
 
-  <div class="card" style="background:#161b22;padding:20px;border-radius:12px;width:220px;text-align:center;">
-    <h3>Crimson</h3>
-    <p>✔ Voar no Lobby<br>✔ Tag Personalizada</p>
-    <div class="preco">R$9,90</div>
-    <a href="https://discord.gg/wWB86SFwp" target="_blank">
-      <button>💬 Comprar</button>
-    </a>
-  </div>
-
-  <div class="card" style="background:#161b22;padding:20px;border-radius:12px;width:220px;text-align:center;">
-    <h3>Crimson</h3>
-    <p>✔ Voar no Lobby<br>✔ Tag Personalizada</p>
-    <div class="preco">R$9,90</div>
-    <a href="https://discord.gg/wWB86SFwp" target="_blank">
-      <button>💬 Comprar</button>
-    </a>
-  </div>
+  <?php endforeach; ?>
 
 </section>
+
+</body>
+</html>
