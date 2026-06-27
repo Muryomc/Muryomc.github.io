@@ -1,125 +1,122 @@
-<?php
-session_start();
-include "db.php";
-?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>MuryoMC VIPs</title>
+<title>MuryoMC - VIPs</title>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background:#0f172a;
+  color:white;
+}
+
+header {
+  text-align:center;
+  padding:60px 20px;
+  background:#111827;
+}
+
+header h1 {
+  color:#00ff99;
+  font-size:42px;
+}
+
+section {
+  padding:50px 20px;
+  text-align:center;
+}
+
+.vip-container {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.vip {
+  background:#1f2937;
+  padding:20px;
+  border-radius:12px;
+  width:250px;
+}
+
+.vip h3 {
+  color:#00ff99;
+}
+
+button {
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  background:#00ff99;
+  color:black;
+  cursor:pointer;
+  border-radius:8px;
+  font-weight:bold;
+}
+</style>
+
 </head>
 
-<body style="margin:0;font-family:Arial;background:#0b1220;color:white;">
+<body>
 
-<h2>VIPs</h2>
+<header>
+  <h1>🛡️ Bem-vindo ao MuryoMC</h1>
+  <p>Escolha seu VIP e aproveite vantagens exclusivas no servidor</p>
+</header>
 
-<section style="background:#111827;padding:60px 20px;text-align:center;">
+<!-- VIPS -->
+<section>
+  <h2>🔥 VIPs Disponíveis</h2>
 
-<h2 style="font-size:40px;color:#00ff99;margin-bottom:20px;">
-🛡️ Bem-vindo ao MuryoMC
-</h2>
+  <div class="vip-container">
 
-<p style="max-width:900px;margin:auto;font-size:20px;line-height:35px;color:#d1d5db;">
+    <div class="vip">
+      <h3>VIP Bronze</h3>
+      <p>- Kit inicial exclusivo</p>
+      <p>- Tag no chat</p>
+      <p>- /fly em áreas seguras</p>
+      <button onclick="comprar('VIP Bronze')">Comprar via PIX</button>
+    </div>
 
-O <strong>MuryoMC</strong> é um servidor de <strong>BedWars</strong> criado por
-<strong>Lwzin</strong>, <strong>Fedex</strong> e <strong>Fenix</strong>.
+    <div class="vip">
+      <h3>VIP Prata</h3>
+      <p>- Tudo do Bronze</p>
+      <p>- /home ilimitado</p>
+      <p>- Acesso a eventos especiais</p>
+      <button onclick="comprar('VIP Prata')">Comprar via PIX</button>
+    </div>
 
-<br><br>
+    <div class="vip">
+      <h3>VIP Ouro</h3>
+      <p>- Tudo do Prata</p>
+      <p>- Fly liberado</p>
+      <p>- Kits semanais raros</p>
+      <button onclick="comprar('VIP Ouro')">Comprar via PIX</button>
+    </div>
 
-Nossa missão é oferecer uma experiência divertida, competitiva e cheia de novidades para todos os jogadores.
-
-<br><br>
-
-Contamos com mapas exclusivos, sistema de VIPs, kits, eventos e uma equipe dedicada para manter o servidor sempre atualizado.
-
-</p>
-
-<br><br>
-
-<div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
-
-  <div style="background:#161b22;padding:25px;border-radius:15px;width:220px;">
-    <h2 style="color:#00ff99;">⚔️</h2>
-    <h3>BedWars</h3>
-    <p>Partidas rápidas e competitivas.</p>
   </div>
-
-  <div style="background:#161b22;padding:25px;border-radius:15px;width:220px;">
-    <h2 style="color:#00ff99;">👑</h2>
-    <h3>VIPs</h3>
-    <p>Benefícios exclusivos para evoluir sua experiência.</p>
-  </div>
-
-  <div style="background:#161b22;padding:25px;border-radius:15px;width:220px;">
-    <h2 style="color:#00ff99;">📦</h2>
-    <h3>Kits</h3>
-    <p>Kits especiais para começar cada partida.</p>
-  </div>
-
-  <div style="background:#161b22;padding:25px;border-radius:15px;width:220px;">
-    <h2 style="color:#00ff99;">🎉</h2>
-    <h3>Eventos</h3>
-    <p>Eventos frequentes com recompensas.</p>
-  </div>
-
-</div>
-
-<br><br>
-
-<a href="https://discord.gg/wWB86SFwp" target="_blank">
-  <button style="padding:18px 45px;font-size:22px;background:#5865F2;color:white;border:none;border-radius:10px;">
-    💬 Entrar no Discord
-  </button>
-</a>
-
 </section>
 
-<!-- 🔐 LOGIN STATUS -->
-<section style="text-align:center;padding:20px;">
-<?php if(isset($_SESSION['user_id'])): ?>
-  <p>Logado como: <b><?= $_SESSION['username'] ?></b></p>
-  <a href="logout.php" style="color:red;">Sair</a>
-<?php else: ?>
-  <a href="login.html">Login</a> | <a href="register.html">Registrar</a>
-<?php endif; ?>
-</section>
+<!-- COMPRA PIX -->
+<section id="pix">
+  <h2>💰 Pagamento PIX</h2>
+  <p id="msg">Selecione um VIP para ver os dados PIX</p>
 
-<!-- 🛒 VIP CARDS -->
-<section style="padding:40px 20px;background:#0f172a;display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
-
-  <?php
-  $vips = [
-    ["Crimson", 9.90],
-    ["Shadow", 14.90],
-    ["Legend", 19.90]
-  ];
-
-  foreach ($vips as $vip):
-  ?>
-
-  <div style="background:#161b22;padding:20px;border-radius:12px;width:220px;text-align:center;">
-    <h3><?= $vip[0] ?></h3>
-    <p>✔ Voar no Lobby<br>✔ Tag Personalizada</p>
-    <div class="preco">R$<?= number_format($vip[1],2,",",".") ?></div>
-
-    <?php if(isset($_SESSION['user_id'])): ?>
-
-      <form method="POST" action="buy.php">
-        <input type="hidden" name="item_name" value="<?= $vip[0] ?>">
-        <input type="hidden" name="price" value="<?= $vip[1] ?>">
-        <button type="submit">💬 Comprar</button>
-      </form>
-
-    <?php else: ?>
-      <p>Faça login para comprar</p>
-    <?php endif; ?>
-
+  <div id="pixBox" style="display:none;margin-top:20px;">
+    <p><strong>Chave PIX:</strong> 000e1111-xxxx-xxxx-xxxx-999999999</p>
+    <p><strong>Nome:</strong> MuryoMC Store</p>
   </div>
-
-  <?php endforeach; ?>
-
 </section>
+
+<script>
+function comprar(vip) {
+  document.getElementById("msg").innerText = "Você escolheu: " + vip;
+  document.getElementById("pixBox").style.display = "block";
+}
+</script>
 
 </body>
 </html>
